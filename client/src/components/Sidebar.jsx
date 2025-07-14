@@ -10,10 +10,10 @@ const Sidebar = () => {
         unseenMessages, setUnseenMessages } = useContext(ChatContext);
 
     const {logout, onlineUsers} = useContext(AuthContext)
-
     const [input, setInput] = useState(false)
-
     const navigate = useNavigate();
+
+    const [showMenu, setShowMenu] = useState(false); 
 
     const filteredUsers = input ? users.filter((user)=>user.fullName.toLowerCase().includes(input.toLowerCase())) : users;
 
@@ -24,21 +24,31 @@ const Sidebar = () => {
   return (
     <div className={`bg-[#8185B2]/10 h-full p-5 rounded-r-xl overflow-y-scroll text-white ${selectedUser ? "max-md:hidden" : ''}`}>
       <div className='pb-5'>
-        <div className='flex justify-between items-center'>
-            <img src={assets.logo} alt="logo" className='max-w-40' />
-            <div className="relative py-2 group">
-                <img src={assets.menu_icon} alt="Menu" className='max-h-5 cursor-pointer' />
-                <div className='absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#282142] border border-gray-600 text-gray-100 hidden group-hover:block'>
-                    <p onClick={()=>navigate('/profile')} className='cursor-pointer text-sm'>Edit Profile</p>
-                    <hr className="my-2 border-t border-gray-500" />
-                    <p onClick={()=> logout()} className='cursor-pointer text-sm'>Logout</p>
-                </div>
-            </div>
-        </div>
+        <div className='flex items-center justify-between'>
+            {/* <img src={assets.logo} alt="logo" className='max-w-40' /> */}
+            <h1 className="font-bold">
+                <span className="text-[1.7rem] text-red-400 -skew-x-16 ">Y</span>
+                <span className="text-[1.3rem] text-blue-500">chat</span>
+            </h1>
 
-        <div className='bg-[#282142] rounded-full flex items-center gap-2 py-3 px-4 mt-5'>
+
+            {/* <p>Logo</p> */}
+            <div className='relative py-2 group '>
+                <img onClick={() => setShowMenu(!showMenu)} src={assets.menu_icon} alt="logo" className='max-h-5 cursor-pointer' />
+                <div  className={`absolute  top-full right-0 z-20 w-32 text-gray-100 ${showMenu? 'block':'hidden ' }`}>
+                    <p onClick={()=>{
+                      navigate('/profile');
+                      setShowMenu(false);
+                      }} className='cursor-pointer text-sm'>Edit profile</p>
+                    <hr className='my-2 border-t border-gray-500'/>
+                    <p onClick={()=>{logout()}} className='cursor-pointer text-sm'>logout</p>
+                </div>
+            </div>  
+         </div>
+
+        <div className='bg-[#1b1824] rounded-full flex items-center gap-2 py-3 px-4 mt-5'>
             <img src={assets.search_icon} alt="Search" className='w-3'/>
-            <input onChange={(e)=>setInput(e.target.value)} type="text" className='bg-transparent border-none outline-none text-white text-xs placeholder-[#c8c8c8] flex-1' placeholder='Search User...'/>
+            <input onChange={(e)=>setInput(e.target.value)} type="text" className='bg-transparent border-none outline-none text-white text-xs placeholder-[#c8c8c8] flex-1' placeholder='search user...'/>
         </div>
 
       </div>
@@ -52,8 +62,8 @@ const Sidebar = () => {
                     <p>{user.fullName}</p>
                     {
                         onlineUsers.includes(user._id)
-                        ? <span className='text-green-400 text-xs'>Online</span>
-                        : <span className='text-neutral-400 text-xs'>Offline</span>
+                        ? <span className='text-green-400 text-xs'>online</span>
+                        : <span className='text-neutral-400 text-xs'>offline</span>
                     }
                 </div>
                 {unseenMessages[user._id] > 0 && <p className='absolute top-4 right-4 text-xs h-5 w-5 flex justify-center items-center rounded-full bg-violet-500/50'>{unseenMessages[user._id]}</p>}

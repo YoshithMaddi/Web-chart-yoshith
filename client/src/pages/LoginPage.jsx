@@ -28,7 +28,7 @@ const LoginPage = () => {
     <div className='min-h-screen bg-cover bg-center flex items-center justify-center gap-8 sm:justify-evenly max-sm:flex-col backdrop-blur-2xl'>
 
       {/* -------- left -------- */}
-      <img src={assets.logo_big} alt="" className='w-[min(30vw,250px)]'/>
+      {/* <img src={assets.logo_big} alt="" className='w-[min(30vw,250px)]'/> */}
 
       {/* -------- right -------- */}
 
@@ -64,16 +64,16 @@ const LoginPage = () => {
           {currState === "Sign up" ? "Create Account" : "Login Now"}
         </button>
 
-        <div className='flex items-center gap-2 text-sm text-gray-500'>
+        {/* <div className='flex items-center gap-2 text-sm text-gray-500'>
           <input type="checkbox" />
           <p>Agree to the terms of use & privacy policy.</p>
-        </div>
+        </div> */}
 
         <div className='flex flex-col gap-2'>
           {currState === "Sign up" ? (
-            <p className='text-sm text-gray-600'>Already have an account? <span onClick={()=>{setCurrState("Login"); setIsDataSubmitted(false)}} className='font-medium text-violet-500 cursor-pointer'>Login here</span></p>
+            <p className='text-sm text-gray-600'>already have an account? <span onClick={()=>{setCurrState("Login"); setIsDataSubmitted(false)}} className='font-medium text-violet-500 cursor-pointer'>Login here</span></p>
           ) : (
-            <p className='text-sm text-gray-600'>Create an account <span onClick={()=> setCurrState("Sign up")} className='font-medium text-violet-500 cursor-pointer'>Click here</span></p>
+            <p className='text-sm text-gray-600'>create an account <span onClick={()=> setCurrState("Sign up")} className='font-medium text-violet-500 cursor-pointer'>Click here</span></p>
           )}
         </div>
          
