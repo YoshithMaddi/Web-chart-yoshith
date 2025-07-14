@@ -21,6 +21,7 @@ import pic3 from './pic3.png'
 import pic4 from './pic4.png'
 import img1 from './img1.jpg'
 import img2 from './img2.jpg'
+import send_arrow from './send_arrow.svg'
 
 const assets = {
     avatar_icon,
@@ -32,6 +33,7 @@ const assets = {
     search_icon,
     send_button,
     menu_icon,
+    send_arrow,
     arrow_icon,
     code,
     bgImage,
