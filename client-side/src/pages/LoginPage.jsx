@@ -42,25 +42,26 @@ const LoginPage = () => {
 
         {currState === "Sign up" && !isDataSubmitted && (
           <input onChange={(e)=>setFullName(e.target.value)} value={fullName}
-           type="text" className='p-2 border border-gray-500 rounded-md focus:outline-none' placeholder="Full Name" required/>
+           type="text" className='p-2 border border-gray-500  focus:ring-2 focus:ring-gray-500 rounded-md focus:outline-none' placeholder="Full Name" required/>
         )}
 
         {!isDataSubmitted && (
           <>
           <input onChange={(e)=>setEmail(e.target.value)} value={email}
-           type="email" placeholder='Email Address' required className='p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'/>
+           type="email" placeholder='Email Address' required className='p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500'/>
           <input onChange={(e)=>setPassword(e.target.value)} value={password}
-           type="password" placeholder='Password' required className='p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'/>
+           type="password" placeholder='Password' required className='p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500'/>
           </>
         )}
 
         {currState === "Sign up" && isDataSubmitted && (
             <textarea onChange={(e)=>setBio(e.target.value)} value={bio}
-             rows={4} className='p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500' placeholder='provide a short bio...' required></textarea>
+             rows={4} className='p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500' placeholder='provide a short bio...' required></textarea>
           )
         }
 
-        <button type='submit' className='py-3 bg-gradient-to-r from-purple-400 to-violet-600 text-white rounded-md cursor-pointer'>
+        <button type='submit' className='py-3 bg-gradient-to-r from-[#1a1a1a]
+ to-gray-600 text-white rounded-md cursor-pointer'>
           {currState === "Sign up" ? "Create Account" : "Login Now"}
         </button>
 
@@ -71,9 +72,9 @@ const LoginPage = () => {
 
         <div className='flex flex-col gap-2'>
           {currState === "Sign up" ? (
-            <p className='text-sm text-gray-600'>already have an account? <span onClick={()=>{setCurrState("Login"); setIsDataSubmitted(false)}} className='font-medium text-violet-500 cursor-pointer'>Login here</span></p>
+            <p className='text-sm text-gray-300'>already have an account?    <span onClick={()=>{setCurrState("Login"); setIsDataSubmitted(false)}} className='font-medium text-black cursor-pointer'> Login here</span></p>
           ) : (
-            <p className='text-sm text-gray-600'>create an account <span onClick={()=> setCurrState("Sign up")} className='font-medium text-violet-500 cursor-pointer'>Click here</span></p>
+            <p className='text-sm text-gray-300'>create an account <span onClick={()=> setCurrState("Sign up")} className='font-medium text-black cursor-pointer'> Click here</span></p>
           )}
         </div>
          
