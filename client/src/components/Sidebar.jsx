@@ -6,8 +6,7 @@ import { ChatContext } from '../../context/ChatContext';
 
 const Sidebar = () => {
 
-    const {getUsers, users, selectedUser, setSelectedUser,
-        unseenMessages, setUnseenMessages } = useContext(ChatContext);
+    const {getUsers, users, selectedUser, setSelectedUser,unseenMessages, setUnseenMessages } = useContext(ChatContext);
 
     const {logout, onlineUsers} = useContext(AuthContext)
     const [input, setInput] = useState(false)
@@ -26,7 +25,7 @@ const Sidebar = () => {
       <div className='pb-5'>
         <div className='flex items-center justify-between'>
             {/* <img src={assets.logo} alt="logo" className='max-w-40' /> */}
-            <h1 className="font-bold">
+            <h1 className="font-bold" >
                 <span className="text-[1.7rem] text-red-400 -skew-x-16 ">Y</span>
                 <span className="text-[1.3rem] text-blue-500">chat</span>
             </h1>
