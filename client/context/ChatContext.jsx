@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import toast from "react-hot-toast";
 
@@ -11,8 +11,13 @@ export const ChatProvider = ({ children })=>{
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null)
     const [unseenMessages, setUnseenMessages] = useState({})
+    const selectedUserRef = useRef(null);
 
     const {socket, axios} = useContext(AuthContext);
+
+    useEffect(() => {
+        selectedUserRef.current = selectedUser;
+    }, [selectedUser]);
 
     // function to get all users for sidebar
     const getUsers = async () =>{
@@ -54,20 +59,27 @@ export const ChatProvider = ({ children })=>{
     }
 
     // function to subscribe to messages for selected user
-    const subscribeToMessages = async () =>{
+    const subscribeToMessages = () =>{
         if(!socket) return;
 
-        socket.on("newMessage", (newMessage)=>{
-            if(selectedUser && newMessage.senderId === selectedUser._id){
+        const handleNewMessage = (newMessage)=>{
+            const activeUserId = selectedUserRef.current?._id;
+            const messageSenderId = String(newMessage.senderId);
+
+            if(activeUserId && messageSenderId === String(activeUserId)){
                 newMessage.seen = true;
                 setMessages((prevMessages)=> [...prevMessages, newMessage]);
                 axios.put(`/api/messages/mark/${newMessage._id}`);
             }else{
                 setUnseenMessages((prevUnseenMessages)=>({
-                    ...prevUnseenMessages, [newMessage.senderId] : prevUnseenMessages[newMessage.senderId] ? prevUnseenMessages[newMessage.senderId] + 1 : 1
+                    ...prevUnseenMessages,
+                    [messageSenderId] : prevUnseenMessages[messageSenderId] ? prevUnseenMessages[messageSenderId] + 1 : 1
                 }))
             }
-        })
+        };
+
+        socket.on("newMessage", handleNewMessage);
+        return () => socket.off("newMessage", handleNewMessage);
     }
 
     // function to unsubscribe from messages
@@ -76,9 +88,12 @@ export const ChatProvider = ({ children })=>{
     }
 
     useEffect(()=>{
-        subscribeToMessages();
-        return ()=> unsubscribeFromMessages();
-    },[socket, selectedUser])
+        const cleanup = subscribeToMessages();
+        return ()=> {
+            if(cleanup) cleanup();
+            else unsubscribeFromMessages();
+        };
+    },[socket])
 
     const value = {
         messages, users, selectedUser, getUsers, getMessages, sendMessage, setSelectedUser, unseenMessages, setUnseenMessages
