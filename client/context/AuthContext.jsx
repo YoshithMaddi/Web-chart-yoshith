@@ -80,14 +80,14 @@ const login = async (state, credentials)=>{
         if(!userData || socket?.connected) return;
         const newSocket = io(backendUrl, {
             query: {
-                userId: userData._id,
+                userId: String(userData._id),
             }
         });
         newSocket.connect();
         setSocket(newSocket);
 
         newSocket.on("getOnlineUsers", (userIds)=>{
-            setOnlineUsers(userIds);
+            setOnlineUsers(userIds.map((userId) => String(userId)));
         })
     }
 
