@@ -37,11 +37,7 @@ export const signup = async (req, res)=>{
 export const login = async (req, res) =>{
     try {
         const { email, password } = req.body;
-        const userData = await User.findOne({email});
-
-        if (!userData) {
-            return res.json({ success: false, message: "Invalid credentials" });
-        }
+        const userData = await User.findOne({email})
 
         const isPasswordCorrect = await bcrypt.compare(password, userData.password);
 
@@ -49,12 +45,12 @@ export const login = async (req, res) =>{
             return res.json({ success: false, message: "Invalid credentials" });
         }
 
-        const token = generateToken(userData._id);
+        const token = generateToken(userData._id)
 
-        res.json({success: true, userData, token, message: "Login successful"});
+        res.json({success: true, userData, token, message: "Login successful"})
     } catch (error) {
         console.log(error.message);
-        res.json({success: false, message: error.message});
+        res.json({success: false, message: error.message})
     }
 }
 // Controller to check if user is authenticated
