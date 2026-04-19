@@ -40,38 +40,19 @@ io.on("connection", (socket)=>{
 app.use(express.json({limit: "4mb"}));
 app.use(cors());
 
-// Keep a lightweight health endpoint available even if the database is down.
-app.use("/api/status", (req, res)=> res.send("Server is live"));
-
-app.use(async (req, res, next) => {
-    try {
-        await connectDB();
-        next();
-    } catch (error) {
-        console.error("Database unavailable:", error.message);
-        res.status(503).json({
-            success: false,
-            message: "Database connection failed. Please try again in a moment.",
-        });
-    }
-});
-
 
 // Routes setup
+app.use("/api/status", (req, res)=> res.send("Server is live"));
 app.use("/api/auth", userRouter);
 app.use("/api/messages", messageRouter)
 
 
+// Connect to MongoDB
+await connectDB();
+
 if(process.env.NODE_ENV !== "production"){
     const PORT = process.env.PORT || 5000;
-    connectDB()
-        .then(() => {
-            server.listen(PORT, ()=> console.log("Server is running on PORT: " + PORT));
-        })
-        .catch((error) => {
-            console.error("Failed to start server:", error.message);
-            process.exit(1);
-        });
+    server.listen(PORT, ()=> console.log("Server is running on PORT: " + PORT));
 }
 
 // Export server for Vervel
